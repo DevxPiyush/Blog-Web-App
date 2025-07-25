@@ -1,0 +1,51 @@
+<%- include("partials/header.ejs") %>
+
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Welcome to my blog web app</h2>
+
+  <% if (posts.length > 0) { %>
+    <% posts.forEach((post, index) => { 
+        if (!post || !post.content || !post.title) return;
+    %>
+      <div class="card mb-3">
+        <div class="card-body">
+          <h3 class="card-title"><%= post.title %></h3>
+
+          <!-- Short Preview -->
+          <p class="card-text short-content" id="short-<%= index %>">
+            <%= post.content.length > 100 ? post.content.slice(0, 100) + "..." : post.content %>
+          </p>
+
+          <!-- Full Content (hidden by default) -->
+          <p class="card-text full-content d-none" id="full-<%= index %>"><%= post.content %></p>
+
+          <button class="btn btn-outline-secondary me-2" onclick="toggleContent(<%= index %>)" id="btn-<%= index %>">Read More</button>
+          <a class="btn btn-primary me-2" href="/edit/<%= post.id %>">Edit</a>
+          <form action="/delete/<%= post.id %>" method="POST" class="d-inline">
+            <button class="btn btn-danger" type="submit">Delete</button>
+          </form>
+        </div>
+      </div>
+    <% }) %>
+  <% } %>
+</div>
+
+<script>
+  function toggleContent(index) {
+    const shortPara = document.getElementById(`short-${index}`);
+    const fullPara = document.getElementById(`full-${index}`);
+    const button = document.getElementById(`btn-${index}`);
+
+    if (fullPara.classList.contains('d-none')) {
+      shortPara.classList.add('d-none');
+      fullPara.classList.remove('d-none');
+      button.textContent = "Show Less";
+    } else {
+      shortPara.classList.remove('d-none');
+      fullPara.classList.add('d-none');
+      button.textContent = "Read More";
+    }
+  }
+</script>
+
+<%- include("partials/footer.ejs") %>
