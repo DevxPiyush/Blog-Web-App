@@ -11,15 +11,14 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// ✅ Store blog posts here
+
 let posts = [];
 
-// ✅ Home route — display all posts
 app.get("/", (req, res) => {
-  res.render("home", { posts: posts, activePage: "home" }); // Remove .ejs, Express knows it's ejs
+  res.render("home", { posts: posts, activePage: "home" }); 
 });
 
-// ✅ Compose route — show form
+
 app.get("/compose", (req, res) => {
   res.render("compose", {activePage: "compose"});
 });
@@ -36,10 +35,10 @@ app.get("/compose", (req, res) => {
 // });
 
 app.get("/edit/:id", (req, res) => {
-  const postId = Number(req.params.id); // Use Number to match ID type
+  const postId = Number(req.params.id); 
   const post = posts.find(p => p.id === postId);
   if (post) {
-    res.render("edit", { post: post, activePage: "edit" });  // ✅ Pass activePage
+    res.render("edit", { post: post, activePage: "edit" });  
   } else {
     res.status(404).send("Post not found");
   }
@@ -53,7 +52,7 @@ app.get("/contact", (req,res)=>{
     res.render("contact.ejs", {activePage: "contact"})
 })
 
-// ✅ Handle form submission from compose page
+
 app.post("/compose", (req, res) => {
   const postTitle = req.body.Title;
   const postContent = req.body.Content;
@@ -90,7 +89,7 @@ app.post('/edit/:id', (req, res) => {
 
 
 
-// ✅ Start server
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
